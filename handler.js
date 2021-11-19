@@ -2,9 +2,8 @@ const AWS = require("aws-sdk");
 const sqs = new AWS.SQS({
     region: "us-east-1",
 });
-exports.hello = (event, context, callback) => {
+exports.sqsSendQueue = (event, context, callback) => {
     console.info(event);
-    //const accountId = context.invokedFunctionArn.split(":")[4];
     const queueUrl = `http://localhost:4566/000000000000/local-queue`;
     // response and status of HTTP endpoint
     const responseBody = {
@@ -34,4 +33,17 @@ exports.hello = (event, context, callback) => {
         };
         callback(null, response);
     });
+};
+
+
+exports.sqsReadQueue = (event, context, callback) => {
+  const response = {
+      statusCode: 200,
+      body: JSON.stringify({
+          message: "SQS event processed.",
+          input: event,
+      }),
+  };
+  console.info("event:", JSON.stringify(event));
+  callback(null, response);
 };

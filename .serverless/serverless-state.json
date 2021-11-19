@@ -84,10 +84,16 @@
               }
             }
           },
-          "HelloLogGroup": {
+          "SqsSendQueueLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/exemplo-lambda2-local-hello"
+              "LogGroupName": "/aws/lambda/exemplo-lambda2-local-sqsSendQueue"
+            }
+          },
+          "SqsReadQueueLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/exemplo-lambda2-local-sqsReadQueue"
             }
           },
           "IamRoleLambdaExecution": {
@@ -167,18 +173,18 @@
               }
             }
           },
-          "HelloLambdaFunction": {
+          "SqsSendQueueLambdaFunction": {
             "Type": "AWS::Lambda::Function",
             "Properties": {
               "Code": {
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/exemplo-lambda2/local/1637288744297-2021-11-19T02:25:44.297Z/exemplo-lambda2.zip"
+                "S3Key": "serverless/exemplo-lambda2/local/1637325421900-2021-11-19T12:37:01.900Z/exemplo-lambda2.zip"
               },
-              "Handler": "handler.hello",
+              "Handler": "handler.sqsSendQueue",
               "Runtime": "nodejs12.x",
-              "FunctionName": "exemplo-lambda2-local-hello",
+              "FunctionName": "exemplo-lambda2-local-sqsSendQueue",
               "MemorySize": 1024,
               "Timeout": 6,
               "Role": {
@@ -189,17 +195,52 @@
               }
             },
             "DependsOn": [
-              "HelloLogGroup"
+              "SqsSendQueueLogGroup"
             ]
           },
-          "HelloLambdaVersionFEs39exNvKHik6D58Qw3u1oweiIB9hSSCb1kXHvkxI": {
+          "SqsReadQueueLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/exemplo-lambda2/local/1637325421900-2021-11-19T12:37:01.900Z/exemplo-lambda2.zip"
+              },
+              "Handler": "handler.sqsReadQueue",
+              "Runtime": "nodejs12.x",
+              "FunctionName": "exemplo-lambda2-local-sqsReadQueue",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "SqsReadQueueLogGroup"
+            ]
+          },
+          "SqsSendQueueLambdaVersionrFyIrDJugsxqpLN0WzDD1qeZzILjBW4vB4GigZDVY": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
-                "Ref": "HelloLambdaFunction"
+                "Ref": "SqsSendQueueLambdaFunction"
               },
-              "CodeSha256": "GrR6nRu0YjsbdPCh4/j7eNPUYldBwbz+uDYikNfBiAA="
+              "CodeSha256": "i/i7ntmI1GS75eVe7WLo0tOeN6/RYKUBUvnrE7KScpE="
+            }
+          },
+          "SqsReadQueueLambdaVersionAqbCgyjvO7LxPDUYvAncA3AAlbxwvFPeaIUP1HHk": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "SqsReadQueueLambdaFunction"
+              },
+              "CodeSha256": "i/i7ntmI1GS75eVe7WLo0tOeN6/RYKUBUvnrE7KScpE="
             }
           }
         },
@@ -212,13 +253,22 @@
               "Name": "sls-exemplo-lambda2-local-ServerlessDeploymentBucketName"
             }
           },
-          "HelloLambdaFunctionQualifiedArn": {
+          "SqsSendQueueLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "HelloLambdaVersionFEs39exNvKHik6D58Qw3u1oweiIB9hSSCb1kXHvkxI"
+              "Ref": "SqsSendQueueLambdaVersionrFyIrDJugsxqpLN0WzDD1qeZzILjBW4vB4GigZDVY"
             },
             "Export": {
-              "Name": "sls-exemplo-lambda2-local-HelloLambdaFunctionQualifiedArn"
+              "Name": "sls-exemplo-lambda2-local-SqsSendQueueLambdaFunctionQualifiedArn"
+            }
+          },
+          "SqsReadQueueLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "SqsReadQueueLambdaVersionAqbCgyjvO7LxPDUYvAncA3AAlbxwvFPeaIUP1HHk"
+            },
+            "Export": {
+              "Name": "sls-exemplo-lambda2-local-SqsReadQueueLambdaFunctionQualifiedArn"
             }
           }
         }
@@ -322,16 +372,27 @@
     ],
     "pluginsData": {},
     "functions": {
-      "hello": {
-        "handler": "handler.hello",
+      "sqsSendQueue": {
+        "handler": "handler.sqsSendQueue",
         "events": [],
-        "name": "exemplo-lambda2-local-hello",
+        "name": "exemplo-lambda2-local-sqsSendQueue",
         "package": {},
         "memory": 1024,
         "timeout": 6,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "HelloLambdaVersionFEs39exNvKHik6D58Qw3u1oweiIB9hSSCb1kXHvkxI"
+        "versionLogicalId": "SqsSendQueueLambdaVersionrFyIrDJugsxqpLN0WzDD1qeZzILjBW4vB4GigZDVY"
+      },
+      "sqsReadQueue": {
+        "handler": "handler.sqsReadQueue",
+        "events": [],
+        "name": "exemplo-lambda2-local-sqsReadQueue",
+        "package": {},
+        "memory": 1024,
+        "timeout": 6,
+        "runtime": "nodejs12.x",
+        "vpc": {},
+        "versionLogicalId": "SqsReadQueueLambdaVersionAqbCgyjvO7LxPDUYvAncA3AAlbxwvFPeaIUP1HHk"
       }
     },
     "configValidationMode": "warn",
@@ -359,7 +420,7 @@
     "artifact": "/home/vinicius/java/itau/exemplo-lambda2/.serverless/exemplo-lambda2.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/exemplo-lambda2/local/1637288744297-2021-11-19T02:25:44.297Z",
+    "artifactDirectoryName": "serverless/exemplo-lambda2/local/1637325421900-2021-11-19T12:37:01.900Z",
     "artifact": "exemplo-lambda2.zip"
   }
 }
