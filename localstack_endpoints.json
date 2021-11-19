@@ -1,0 +1,6 @@
+{
+    "CloudFormation": "http://localhost:4566",
+    "CloudWatch": "http://localhost:4566",
+    "Lambda": "http://localhost:4566",
+    "SQS": "http://localhost:4566"
+}
